@@ -1,0 +1,37 @@
+{
+    "Add acknowledgement": {
+            "Description": "Add acknowledgement to entity",
+            "Syntax": "ack to [SiteScope name] for [Entity full path] disable [Comment]\nack to [SiteScope name] for [Entity full path] enable [Comment]",
+            "Examples":"ack to SisOnAmazon for memMonitors/mem disable I'm on it\nack to SisOnAmazon for memMonitors/mem enable it's now ok"
+     },
+    "Enable/disable Entity": {
+            "Description": "Enable or disable entity , monitor or group",
+            "Syntax": "[enable | disable] [entity type] [Entity full path] on [SiteScope name]",
+            "Examples":"enable group HPE/M1 on SisOnAmazon\ndisable group HPE/M1 on SisOnAmazon\nenable monitor memMonitors/mem on SisOnAmazon\ndisable monitor memMonitors/mem on SisOnAmazon"
+     },
+    "Find monitor/group": {
+            "Description": "Find monitor, group , tag or all on SiteScope",
+            "Syntax": "find [entity type] [Entity name] on [SiteScope name]",
+            "Examples":"find monitor mem on SisOnAmazon\nfind group memMonitors on SisOnAmazon\nfind tag DockerMonitors on SisOnAmazon\nfind all Docker on SisOnAmazon"
+     },
+    "Get monitors list": {
+            "Description": "Get monitors list (recursive) in group",
+            "Syntax": "get monitors in group [Group full path] on [SiteScope name]\nget monitors recursive in group [Group full path] on [SiteScope name]",
+            "Examples":"get monitors in group HPE/M1 on SisOnAmazon\nget monitors recursive in group HPE/M1 on SisOnAmazon"
+     },
+    "health": {
+            "Description": "get all monitors status for target or tag",
+            "Syntax": "health of [Target | Tag] on [SiteScope name]",
+            "Examples":"health of SiteScope Server on SisOnAmazon\nhealth of DockerTag on SisOnAmazon"
+     },
+    "Show/reload configuration ": {
+            "Description": "Show or reload SiteScope instances configuration file",
+            "Syntax": "show SiteScope config file\nreload SiteScope config file",
+            "Examples":""
+     },
+    "Run monitor/group": {
+            "Description": "Run monitor or group",
+            "Syntax": "run [entity type] [Entity full path] on [SiteScope name]",
+            "Examples":"run monitor memMonitors/mem on SisOnAmazon\nrun group HPE/M1 on SisOnAmazon"
+     }
+}
