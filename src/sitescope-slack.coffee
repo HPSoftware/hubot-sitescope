@@ -68,7 +68,7 @@ module.exports = (robot) ->
         getHealthMonitorsForTarget robot,msg
 
 #   Show or reload SiteScope instances configuration file
-    robot.respond /load SiteScope config file/i, (msg) ->
+    robot.respond /reload SiteScope config file/i, (msg) ->
         loadSiteScopeConfigFile robot,msg
     robot.respond /show SiteScope config file/i, (msg) ->
         showSiteScopeConfigFile robot,msg
