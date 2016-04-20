@@ -43,17 +43,16 @@ module.exports = (robot) ->
     setEnableDisableStatus robot,msg,"group",false
 
   #   Find monitor, group , tag or all on SiteScope
-  robot.respond /find monitor (.*) on (.*)/i, (msg) ->
-    robot.logger.debug "We are in find"
+  robot.respond /sitescope find monitors (.*)/i, (msg) ->
     findEntity robot,msg,"monitor"
 
-  robot.respond /find group (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope find group (.*)/i, (msg) ->
     findEntity robot,msg,"group"
 
-  robot.respond /find tag (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope find tag (.*)/i, (msg) ->
     findEntity robot,msg,"tag"
 
-  robot.respond /find all (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope find all (.*)/i, (msg) ->
     findEntity robot,msg,"all"
 
   #   Get monitors list (recursive) in group
@@ -74,10 +73,10 @@ module.exports = (robot) ->
     showSiteScopeConfigFile robot,msg
 
   #   Run monitor or group
-  robot.respond /run monitor (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope run monitor (.*)/i, (msg) ->
     runMonitorOrGroup   robot, msg , "Monitor" ,"fullPathToMonitor", "monitor"
 
-  robot.respond /run group (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope run group (.*)/i, (msg) ->
     runMonitorOrGroup   robot, msg , "Group" ,"fullPathToGroup" ,"group"
 
   robot.respond /get entities for (.*)/i, (msg) ->
@@ -183,9 +182,8 @@ setEnableDisableStatus = (robot,msg,type,enable) ->
 ########################################################################################
 findEntity = (robot,msg,entity_type) ->
   reporter = msg.message.user.name
-  sis = msg.match[2].trim()
   monitorName = msg.match[1].trim()
-  tempObj = getSisConfigurationObject sis
+  tempObj = getSisConfigurationObject
   if tempObj
     sisUrl = tempObj['url']
     sisAuthorization = tempObj['Authorization']
@@ -436,8 +434,8 @@ runMonitorOrGroup = (robot, msg ,entityType,fullPathKey,api) ->
   full_pathArr = msg.match[1].trim().split("/")
   entityName = full_pathArr[full_pathArr.length - 1]
   full_path = full_pathArr.join("_sis_path_delimiter_")
-  sis = msg.match[2].trim()
-  tempObj = getSisConfigurationObject sis
+
+  tempObj = getSisConfigurationObject
   if tempObj
       sisUrl = tempObj['url']
       sisAuthorization = tempObj['Authorization']
@@ -519,12 +517,10 @@ addAcknowledgement = (robot,msg,sisAuthorization,url) ->
 #  Get SisConfiguration Object function
 ########################################################################################
 
-getSisConfigurationObject = (sis) ->
+getSisConfigurationObject = () ->
   allSisObj = JSON.parse(process.env.SIS_CONFIGURATION)
   tempObj = null
   for key of allSisObj
-    regexp = new RegExp(sis,"i")
-    if key.match(regexp)
       tempObj = allSisObj[key]
       break
   tempObj

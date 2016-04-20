@@ -10,9 +10,9 @@
             "Examples":"enable group HPE/M1 on SisOnAmazon\ndisable group HPE/M1 on SisOnAmazon\nenable monitor memMonitors/mem on SisOnAmazon\ndisable monitor memMonitors/mem on SisOnAmazon"
      },
     "Find monitor/group": {
-            "Description": "Find monitor, group , tag or all on SiteScope",
-            "Syntax": "find [entity type] [Entity name] on [SiteScope name]",
-            "Examples":"find monitor mem on SisOnAmazon\nfind group memMonitors on SisOnAmazon\nfind tag DockerMonitors on SisOnAmazon\nfind all Docker on SisOnAmazon"
+            "Description": "Find monitors, group , tag or all",
+            "Syntax": "sitescope find [entity type] [Entity name]",
+            "Examples":"sitescope find monitors mem\nsitescope find group memMonitors\nsitescope find tag DockerMonitors\nsitescope find all Docker"
      },
     "Get monitors list": {
             "Description": "Get monitors list (recursive) in group",
@@ -31,7 +31,7 @@
      },
     "Run monitor/group": {
             "Description": "Run monitor or group",
-            "Syntax": "run [entity type] [Entity full path] on [SiteScope name]",
-            "Examples":"run monitor memMonitors/mem on SisOnAmazon\nrun group HPE/M1 on SisOnAmazon"
+            "Syntax": "sitescope run [entity type] [Entity full path]",
+            "Examples":"sitescope run monitor memMonitors/mem\nsitescope run group HPE/M1"
      }
 }
