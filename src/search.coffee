@@ -3,6 +3,7 @@ defaultSis = "SisAppPulse"
 module.exports = (robot) ->
   #   search monitor, group , tag or all on SiteScope
   robot.respond /sitescope search monitors for (.*)/i, (msg) ->
+    robot.logger.debug "We searching for monitors"
     searchEntity robot,msg,"monitor"
 
   robot.respond /sitescope search group for (.*)/i, (msg) ->
@@ -103,7 +104,7 @@ getEntities = (robot,msg) ->
     sis = defaultSis
   else
     sis = sis.trim()
-    
+
   robot.logger.debug "sis = #{sis}"
   tempObj = functions.getSisConfigurationObject sis
   if tempObj
