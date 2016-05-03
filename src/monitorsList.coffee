@@ -1,42 +1,14 @@
-# Description
-#   SiteScope Hubot by slack adapter
-#
-# Configuration:
-#   sitescope-instances.config
-#   sitescope-commands.help
-#
-# Description:
-#   SiteScope Hubot by slack adapter
-#
-# Commands:
-#   hubot: sitescope help
-#
-# Dependencies:
-#	None
-#
-# Author:
-#   pini shlomi shlomi@hpe.com
-
-fileupload = require('fileupload').createFileUpload('./scripts')
-
+functions = require('./functions')
 module.exports = (robot) ->
-  robot.respond /get entities for (.*)/i, (msg) ->
-    getEntities robot,msg
-
-
-########################################################################################
-#  get Query Param from json object
-########################################################################################
-
-getQueryParam = (jsonDat) ->
-  queryParams = ''
-  for key of jsonDat
-    queryParams = queryParams + key + '=' + jsonDat[key] + '&'
-  queryParams
-
+  #   Get monitors list (recursive) in group
+  robot.respond /get monitors in group (.*) on (.*)/i, (msg) ->
+    getMonitorsInGroup robot,msg,false
+  
+  robot.respond /get monitors recursive in group (.*) on (.*)/i, (msg) ->
+    getMonitorsInGroup robot,msg,true
 
 ########################################################################################
-#  run all Monitors In Group and retrive the status
+#  get Monitors In Group
 ########################################################################################
 
 getMonitorsInGroup = (robot,msg,recursive) ->
@@ -45,7 +17,7 @@ getMonitorsInGroup = (robot,msg,recursive) ->
   groupPath = msg.match[1].trim()
   full_pathArr = groupPath.split("/")
   full_path = full_pathArr.join("_sis_path_delimiter_")
-  tempObj = getSisConfigurationObject sis
+  tempObj = functions.getSisConfigurationObject sis
   if tempObj
     sisUrl = tempObj['url']
     sisAuthorization = tempObj['Authorization']
@@ -84,7 +56,6 @@ getMonitorsInGroup = (robot,msg,recursive) ->
           channel: msg.message.room
           attachments:attachmentsResult
         robot.emit 'slack.attachment', msgData
-        createMonitorsList robot,msg,groupPath,jsonList,monitorsList,recursive
       catch err
         robot.logger.error err
         return robot.emit 'error', err, msg
@@ -92,38 +63,27 @@ getMonitorsInGroup = (robot,msg,recursive) ->
     robot.logger.debug "We can't find any configuration Sitescope"
     msg.send "We can't find any configuration Sitescope"
 
-
-
-
-
 ########################################################################################
-#  run Monitors in group
+#  create Monitors List
 ########################################################################################
 
-runMonitorsInGroup = (robot,msg,groupPath,jsonList) ->
+createMonitorsList = (robot,msg,groupPath,jsonList,monitorsList,recursive) ->
   #check for monitor in this group
   monitors = jsonList['snapshot_monitorSnapshotChildren']
   getAllMonitorsInGroup robot,groupPath,monitors,monitorsList
-  groups = jsonList['snapshot_groupSnapshotChildren']
-  for group of groups
-    currentGroupPath = "#{groupPath}/#{group}"
-    runMonitorsInGroup robot,msg,currentGroupPath ,groups[group]
-
+  if recursive
+    groups = jsonList['snapshot_groupSnapshotChildren']
+    for group of groups
+      currentGroupPath = "#{groupPath}/#{group}"
+      createMonitorsList robot,msg,currentGroupPath ,groups[group],monitorsList,recursive
 
 ########################################################################################
-#  run Monitors
+#  get All Monitors In Group
 ########################################################################################
 
-runMonitors = (robot,groupPath,monitors) ->
+getAllMonitorsInGroup = (robot,groupPath,monitors,monitorsList) ->
   for monitor of monitors
-    full_path = configuration_snapshot['full_path']
-    entityType = configuration_snapshot['type']
-    entityName = configuration_snapshot['name']
-    formData ="fullPathToMonitor=#{full_path}&identifier=#{reporter}"
-    url = "#{sisUrl}/monitors/monitor/run?#{formData}"
-    runMonitor robot,msg,sisAuthorization,url,full_path.toString(),entityType.toString(),entityName.toString()
-
-
-
-
-
+    val = "Monitor name:#{monitor}  Path:  #{groupPath}"
+    monitorName =
+      value:val
+    monitorsList.push monitorName

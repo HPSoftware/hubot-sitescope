@@ -1,4 +1,9 @@
 {
+    "Show/reload configuration ": {
+            "Description": "Show or reload SiteScope instances configuration file",
+            "Syntax": "show SiteScope config file\nreload SiteScope config file",
+            "Examples":""
+     },
     "Add acknowledgement": {
             "Description": "Add acknowledgement to entity",
             "Syntax": "ack to [SiteScope name] for [Entity full path] disable [Comment]\nack to [SiteScope name] for [Entity full path] enable [Comment]",
@@ -8,11 +13,6 @@
             "Description": "Enable or disable entity , monitor or group",
             "Syntax": "[enable | disable] [entity type] [Entity full path] on [SiteScope name]",
             "Examples":"enable group HPE/M1 on SisOnAmazon\ndisable group HPE/M1 on SisOnAmazon\nenable monitor memMonitors/mem on SisOnAmazon\ndisable monitor memMonitors/mem on SisOnAmazon"
-     },
-    "Find monitor/group": {
-            "Description": "Find monitors, group , tag or all",
-            "Syntax": "sitescope find [entity type] [Entity name]",
-            "Examples":"sitescope find monitors mem\nsitescope find group memMonitors\nsitescope find tag DockerMonitors\nsitescope find all Docker"
      },
     "Get monitors list": {
             "Description": "Get monitors list (recursive) in group",
@@ -24,14 +24,14 @@
             "Syntax": "health of [Target | Tag] on [SiteScope name]",
             "Examples":"health of SiteScope Server on SisOnAmazon\nhealth of DockerTag on SisOnAmazon"
      },
-    "Show/reload configuration ": {
-            "Description": "Show or reload SiteScope instances configuration file",
-            "Syntax": "show SiteScope config file\nreload SiteScope config file",
-            "Examples":""
+    "Search monitor/group": {
+            "Description": "Search monitors, group , tag or all",
+            "Syntax": "sitescope search [entity type] for [Entity name]",
+            "Examples":"sitescope search monitors for mem\nsitescope search group for memMonitors\nsitescope search tag for DockerMonitors\nsitescope search all for Docker"
      },
     "Run monitor/group": {
-            "Description": "Run monitor or group",
-            "Syntax": "sitescope run [entity type] [Entity full path]",
-            "Examples":"sitescope run monitor memMonitors/mem\nsitescope run group HPE/M1"
+            "Description": "Run monitor, for monitors in group set group's path",
+            "Syntax": "sitescope run monitors [Entity full path]",
+            "Examples":"sitescope run monitors memMonitors/mem\nrun monitors in group: sitescope run monitors HPE/M1"
      }
 }
