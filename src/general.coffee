@@ -1,14 +1,14 @@
 fileupload = require('fileupload').createFileUpload('./scripts')
 
-attachmentsResult = []
+supportCommandsResult = []
+sitescopeSetting = null;
 
 module.exports = (robot) ->
-  LoadSitescopeInstencesConfiguration robot
-  LoadSitescopeSupportCommands robot
+  LoadSitescopeConfiguration robot,null,null
 
   #   Show or reload SiteScope instances configuration file
-  robot.respond /load SiteScope config file/i, (msg) ->
-    loadSiteScopeConfigFile robot,msg
+  robot.respond /reload SiteScope config file/i, (msg) ->
+    reloadSiteScopeConfigFile robot,msg
   robot.respond /show SiteScope config file/i, (msg) ->
     showSiteScopeConfigFile robot,msg
   #   Generates SiteScope support comands.
@@ -16,89 +16,77 @@ module.exports = (robot) ->
     getSiteScopeHelpSupport robot,msg
 
 ########################################################################################
-#  Load Sitescope instences configuration
+#  Load Sitescope configuration
 ########################################################################################
 
-LoadSitescopeInstencesConfiguration = (robot) ->
-  fileupload.get 'sitescope-instances.config', (error, data) ->
+LoadSitescopeConfiguration = (robot,msg,show) ->
+  robot.logger.debug "load Sitescope setting  config file"
+  fileupload.get 'sitescope-setting.config', (error, data) ->
     if error
       robot.logger.error error
       return robot.emit 'error', error, msg
-    allSisObj = JSON.parse(data)
-    result = "first time - setting Sitescope instances:"
-    for key of allSisObj
-      result = "#{result}\n#{key}"
+    sitescopeSetting = JSON.parse(data)
     process.env.SIS_CONFIGURATION = data
-    robot.logger.debug result
+    loadSitescopeSupportCommands robot
+    if show
+      showSiteScopeConfigFile robot,msg
 
 ########################################################################################
 #  Load Sitescope Support Commands
 ########################################################################################
 
-LoadSitescopeSupportCommands = (robot) ->
-  fileupload.get 'sitescope-commands.help', (error, data) ->
-    if error
-      robot.logger.error error
-      return robot.emit 'error', error, msg
-    allHelpCommands = JSON.parse(data)
+loadSitescopeSupportCommands = (robot) ->
+  allHelpCommands = sitescopeSetting["help_commands"]
+  
+  fieldsResult = []
+  supportCommandsResult = []
+  for key of allHelpCommands
+    commandObi = allHelpCommands[key]
+    Description = {}
+    Description['title'] = "Description :"
+    Description['value']=commandObi["Description"]
+    fieldsResult.push Description
+
+    Syntax = {}
+    Syntax['title'] = "Syntax :"
+    Syntax['value']=commandObi["Syntax"]
+    fieldsResult.push Syntax
+
+    Examples = {}
+    Examples['title'] = "Examples :"
+    Examples['value']=commandObi["Examples"]
+    fieldsResult.push Examples
+
+    attachment =
+      color:'#0000FF'
+      fields: fieldsResult
     fieldsResult = []
-    for key of allHelpCommands
-      commandObi = allHelpCommands[key]
-      Description = {}
-      Description['title'] = "Description :"
-      Description['value']=commandObi["Description"]
-      fieldsResult.push Description
-
-      Syntax = {}
-      Syntax['title'] = "Syntax :"
-      Syntax['value']=commandObi["Syntax"]
-      fieldsResult.push Syntax
-
-      Examples = {}
-      Examples['title'] = "Examples :"
-      Examples['value']=commandObi["Examples"]
-      fieldsResult.push Examples
-
-      attachment =
-        color:'#0000FF'
-        fields: fieldsResult
-      fieldsResult = []
-      attachmentsResult.push(attachment)
-    process.env.SIS_HELP_COMMANDS = attachmentsResult
-
+    supportCommandsResult.push(attachment)
 
 ########################################################################################
-#  load SiteScope config file
+#  reload SiteScope config file
 ########################################################################################
-loadSiteScopeConfigFile = (robot,msg) ->
-  fileupload.get 'sitescope-instances.config', (error, data) ->
-    if error
-      robot.logger.error error
-      return robot.emit 'error', error, msg
-    allSisObj = JSON.parse(data)
-    result = "reload setting Sitescope instances:"
-    for key of allSisObj
-      result = "#{result}\n#{key}"
-    process.env.SIS_CONFIGURATION = data
-    msg.send result
+reloadSiteScopeConfigFile = (robot,msg) ->
+  LoadSitescopeConfiguration robot,msg,true
 
 ########################################################################################
 #  show SiteScope config file
 ########################################################################################
 showSiteScopeConfigFile = (robot,msg) ->
-  allSisObj = JSON.parse(process.env.SIS_CONFIGURATION)
   fieldsResult = []
-  for key of allSisObj
+  sisInstences = getSiteScopeInstances robot 
+  for key of sisInstences
+    robot.logger.debug "instane : #{key}"
     instances =
       value:key
     fieldsResult.push instances
-  attachmentsResult =
+  instancesResult =
     color:'#0000FF'
     title:"Sitescope instances"
     fields: fieldsResult
   msgData =
     channel: msg.message.room
-    attachments:attachmentsResult
+    attachments:instancesResult
   robot.emit 'slack.attachment', msgData
 
 
@@ -110,5 +98,26 @@ getSiteScopeHelpSupport = (robot,msg) ->
   msgData =
     channel: msg.message.room
     text:'*Support SiteScope Commands*'
-    attachments:attachmentsResult
+    attachments:supportCommandsResult
   robot.emit 'slack.attachment', msgData
+
+
+########################################################################################
+#  get default instances
+########################################################################################
+
+getDefaultSisInstance = (robot) ->
+  if sitescopeSetting != null
+    robot.logger.debug "default_sis: \n#{JSON.stringify(sitescopeSetting["variables"]["default_sis"])}"
+    sitescopeSetting["variables"]["default_sis"];
+
+########################################################################################
+#  get instances
+########################################################################################
+
+getSiteScopeInstances = (robot) ->
+  if sitescopeSetting != null
+    robot.logger.debug "SIS_INSTANCES in getSiteScopeInstances: \n#{JSON.stringify(sitescopeSetting["instances"])}"
+    sitescopeSetting["instances"];
+
+

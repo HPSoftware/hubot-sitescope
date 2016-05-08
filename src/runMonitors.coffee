@@ -1,5 +1,5 @@
 functions = require('./functions')
-defaultSis = "SisAppPulse"
+defaultSis = "SisOnAmazon"
 
 module.exports = (robot) ->
 
@@ -16,12 +16,7 @@ runMonitors = (robot, msg ,entityType,fullPathKey,api) ->
   groupPath = msg.match[1].trim()
   full_pathArr = groupPath.split("/")
   full_path = full_pathArr.join("_sis_path_delimiter_")
-  sis = msg.match[2]
-  if sis == undefined
-    sis = defaultSis
-  else
-    sis = sis.trim()
-  tempObj = functions.getSisConfigurationObject sis
+  tempObj = functions.getSisConfigurationObject msg.match[2]
   if tempObj
     sisUrl = tempObj['url']
     sisAuthorization = tempObj['Authorization']

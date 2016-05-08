@@ -1,12 +1,14 @@
+functions = require('./functions')
+
 module.exports = (robot) ->
   #   Enable or disable entity , monitor or group
-  robot.respond /enable monitor (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope enable monitor (.*)/i, (msg) ->
     setEnableDisableStatus robot,msg,"monitor",true
-  robot.respond /disable monitor (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope disable monitor (.*)/i, (msg) ->
     setEnableDisableStatus robot,msg,"monitor",false
-  robot.respond /enable group (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope enable group (.*)/i, (msg) ->
     setEnableDisableStatus robot,msg,"group",true
-  robot.respond /disable group (.*) on (.*)/i, (msg) ->
+  robot.respond /sitescope disable group (.*)/i, (msg) ->
     setEnableDisableStatus robot,msg,"group",false
 
 ########################################################################################
@@ -18,8 +20,7 @@ setEnableDisableStatus = (robot,msg,type,enable) ->
   full_pathArr = msg.match[1].trim().split("/")
   entityName = full_pathArr[full_pathArr.length - 1]
   full_path = full_pathArr.join("_sis_path_delimiter_")
-  sis = msg.match[2].trim()
-  tempObj = getSisConfigurationObject sis
+  tempObj = functions.getSisConfigurationObject msg.match[2]
   if tempObj
     sisUrl = tempObj['url']
     sisAuthorization = tempObj['Authorization']

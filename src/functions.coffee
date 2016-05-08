@@ -8,7 +8,8 @@
 # Author:
 #   pini shlomi
 
-exports.defaultSis = "SisAppPulse"
+general = require('./general')
+
 ########################################################################################
 #  run monitor function
 ########################################################################################
@@ -21,9 +22,16 @@ exports.runMonitor = (robot,msg,sisAuthorization,url,fullPath,entityType) ->
     if res and res.statusCode != statusOK
       try
         obj = JSON.parse(body )
-        message = obj['message']
-        robot.logger.error "There was a problem with Sitescope,\nError : #{message}"
-        msg.send "There was a problem with Sitescope,\nError : #{message}"
+        attachmentsResults = []
+        msgTitle =  'Monitor : ' + "Sitescope/" + fullPath.split("_sis_path_delimiter_").join("/")
+        attachmentsResults.push createRunningResult 'danger',msgTitle,obj['message']
+        msgData =
+          channel: msg.message.room
+          attachments:attachmentsResults
+        robot.emit 'slack.attachment', msgData
+
+        #robot.logger.error "There was a problem with Sitescope,\nError : #{message}"
+        #msg.send "There was a problem with Sitescope,\nError : #{message}"
       catch err
         robot.logger.error "There was a problem with Sitescope, Error : #{err}"
         msg.send "There was a problem with Sitescope"
@@ -43,7 +51,11 @@ exports.runMonitor = (robot,msg,sisAuthorization,url,fullPath,entityType) ->
 ########################################################################################
 
 exports.getSisConfigurationObject = (sis) ->
-  allSisObj = JSON.parse(process.env.SIS_CONFIGURATION)
+  if sis == undefined
+    sis = JSON.parse(process.env.SIS_CONFIGURATION)["variables"]["default_sis"]
+  else
+    sis = sis.trim()
+  allSisObj = JSON.parse(process.env.SIS_CONFIGURATION)["instances"]
   tempObj = null
   for key of allSisObj
     regexp = new RegExp(sis,"i")
@@ -93,15 +105,24 @@ createMonitorGroupRunningResult = (runningResult,fullPath,entityType) ->
     when "GOOD" then colorStatus = 'good'
     when "DISABLE" then colorStatus = '#D3D3D3'
     else colorStatus = '#0000FF'
+  
+  msgTitle = type + ' : ' + "Sitescope/" + fullPath.split("_sis_path_delimiter_").join("/")
+  msgValue = "Status: #{runMonitorStatusSnapshot_status}\nLast Running: #{dateString}\n#{resultArr.join('\n')}"
+  
+  attachments = createRunningResult colorStatus,msgTitle,msgValue
 
-  attachments =
-    color:colorStatus
-    title:type + ' : ' + "Sitescope " + fullPath.split("_sis_path_delimiter_").join("/")
-    fields: [
-      title: "Details:"
-      value:"Status: #{runMonitorStatusSnapshot_status}\nLast Running: #{dateString}\n#{resultArr.join('\n')}"
-      short:false
-    ]
+########################################################################################
+#  Create Monitor or Group Result function
+########################################################################################
+createRunningResult = (colorStatus,msgTitle,msgValue) ->
+    attachments =
+      color:colorStatus
+      title:msgTitle
+      fields: [
+        title: "Details:"
+        value:msgValue
+        short:false
+      ]
 
 ########################################################################################
 #  Create Monitor or Group Result function
