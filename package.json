@@ -17,6 +17,7 @@
   },
 
   "dependencies": {
+	"fileupload":"^1.0.0"
   },
 
   "peerDependencies": {
