@@ -20,29 +20,23 @@ User put configuration in a config file, see  https://github.hpe.com/ChatOps/hub
 ```json
 {
     "variables":{
-      "default_sis"  :"SisAppPulse"
+      "default_sis"  :"SisOnAmazon"
     },
     "instances":{
-        "SisAppPulse": {
-                "url": "http://myd-vm22177:8080/SiteScope/api",
-                "Authorization": "Basic YWRtaW46YWRtaW4="
-         },
         "SisOnAmazon": {
-                "url": "http://ec2-52-201-214-26.compute-1.amazonaws.com:8080/SiteScope/api",
+                "url": "http://<your IpAddress>:8080/SiteScope/api",
                 "Authorization": "Basic YWRtaW46YWRtaW4="
          }
     },
     "help_commands":{
         "Show/reload configuration ": {
                 "Description": "Show or reload SiteScope instances configuration file",
-                "Syntax": "show SiteScope config file\nreload SiteScope config file",
+                "Syntax": "SiteScope show config file\nSiteScope reload config file",
                 "Examples":""
          },
-        "Search monitor/group": {
-                "Description": "Search monitors, group , tag or all",
-                "Syntax": "sitescope search [entity type] for [Entity name]",
-                "Examples":"sitescope search monitors for mem\nsitescope search group for memMonitors\nsitescope search tag for DockerMonitors\nsitescope search all for Docker"
-         },
+		 
+		 ..............
+		 
         "Run monitor/group": {
                 "Description": "Run monitor, for monitors in group set group's path",
                 "Syntax": "sitescope run monitors [Entity full path]",
@@ -59,40 +53,33 @@ After changing values Please reload configuration again
 Show/reload configuration
 ```
 	Description: Show or reload SiteScope instances configuration file.
-	Syntax: show SiteScope config file
-			reload SiteScope config file
+	Syntax: SiteScope show config file
+			SiteScope reload config file
 ```  
 Add acknowledgement
 ```
 	Description:Add acknowledgement to entity.
-	Syntax: 	ack to [SiteScope name] for [Entity full path] disable [Comment]
-				ack to [SiteScope name] for [Entity full path] enable [Comment]
-	Examples:	ack to SisOnAmazon for memMonitors/mem disable I'm on it
-				ack to SisOnAmazon for memMonitors/mem enable it's now ok
+	Syntax: 	SiteScope add ack for [Entity full path] disable [Comment]
+				SiteScope add ack for [Entity full path] enable [Comment]
+	Examples:	SiteScope add ack for memMonitors/mem disable I'm on it
+				SiteScope add ack for memMonitors/mem enable it's OK now
 ```  
 Enable/disable Entity
 ```
 	Description:Enable or disable entity , monitor or group.
-	Syntax: 	sitescope [enable | disable] [entity type] [Entity full path]
-	Examples:	sitescope enable group HPE/M1\nsitescope disable group HPE/M1
-				sitescope enable monitor memMonitors/mem
-				sitescope disable monitor memMonitors/mem
+	Syntax: 	SiteScope [enable | disable] [entity type] [Entity full path]
+	Examples:	SiteScope enable group HPE/M1
+				SiteScope disable group HPE/M1
+				SiteScope enable monitor memMonitors/mem
+				SiteScope disable monitor memMonitors/mem
 ```  
 Get monitors list
 ```
 	Description:Get monitors list (recursive) in group.
-	Syntax: 	get monitors in group [Group full path] on [SiteScope name]
-				get monitors recursive in group [Group full path] on [SiteScope name]
-	Examples:	get monitors in group HPE/M1 on SisOnAmazon
-				get monitors recursive in group HPE/M1 on SisOnAmazon
-```  
-Enable/disable Entity
-```
-	Description:Enable or disable entity , monitor or group.
-	Syntax: 	sitescope [enable | disable] [entity type] [Entity full path]
-	Examples:	sitescope enable group HPE/M1\nsitescope disable group HPE/M1
-				sitescope enable monitor memMonitors/mem
-				sitescope disable monitor memMonitors/mem
+	Syntax: 	SiteScope get monitors in group [Group full path]
+				SiteScope get monitors recursive in group [Group full path]
+	Examples:	SiteScope get monitors in group HPE/M1
+				SiteScope get monitors recursive in group HPE/M1
 ```  
 health
 ```
@@ -104,16 +91,16 @@ health
 Search monitor/group
 ```
 	Description:Search monitors, group , tag or all.
-	Syntax: 	sitescope search [entity type] for [Entity name]
-	Examples:	sitescope search monitors for mem
-				sitescope search group for memMonitors
-				sitescope search tag for DockerMonitors
-				sitescope search all for Docker
+	Syntax: 	SiteScope search [entity type] for [Entity name]
+	Examples:	SiteScope search monitors for mem
+				SiteScope search group for memMonitors
+				SiteScope search tag for DockerMonitors
+				SiteScope search all for Docker
 ```  
 Run monitor/group
 ```
 	Description:Run monitor, for monitors in group set group's path.
-	Syntax: 	sitescope run monitors [Entity full path]
-	Examples:	sitescope run monitors memMonitors/mem
-				run monitors in group: sitescope run monitors HPE/M1
+	Syntax: 	SiteScope run monitors [Entity full path]
+	Examples:	SiteScope run monitors memMonitors/mem
+				run monitors in group: SiteScope run monitors HPE/M1
 ```  

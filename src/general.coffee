@@ -1,18 +1,21 @@
-###
-Copyright 2016 Hewlett-Packard Development Company, L.P.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-Software distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License. 
-###
-
+# Description
+#   SiteScope Hubot by slack adapter
+#
+# Configuration:
+#   sitescope-instances.config
+#   sitescope-commands.help
+#
+# Description:
+#   SiteScope Hubot by slack adapter
+#
+# Commands:
+#   hubot: sitescope help
+#
+# Dependencies:
+#	None
+#
+# Author:
+#   pini shlomi shlomi@hpe.com
 
 fileupload = require('fileupload').createFileUpload('./scripts')
 
@@ -23,9 +26,9 @@ module.exports = (robot) ->
   LoadSitescopeConfiguration robot,null,null
 
   #   Show or reload SiteScope instances configuration file
-  robot.respond /reload SiteScope config file/i, (msg) ->
+  robot.respond /SiteScope reload config file/i, (msg) ->
     reloadSiteScopeConfigFile robot,msg
-  robot.respond /show SiteScope config file/i, (msg) ->
+  robot.respond /SiteScope show config file/i, (msg) ->
     showSiteScopeConfigFile robot,msg
   #   Generates SiteScope support comands.
   robot.respond /SiteScope help/i, (msg) ->
@@ -91,10 +94,14 @@ reloadSiteScopeConfigFile = (robot,msg) ->
 showSiteScopeConfigFile = (robot,msg) ->
   fieldsResult = []
   sisInstences = getSiteScopeInstances robot 
+  defaultInstance = getDefaultSisInstance robot
   for key of sisInstences
     robot.logger.debug "instane : #{key}"
+    keyDefault = ""
+    if (defaultInstance == key) 
+      keyDefault = "is Default"
     instances =
-      value:key
+      value:key + " #{keyDefault}"
     fieldsResult.push instances
   instancesResult =
     color:'#0000FF'

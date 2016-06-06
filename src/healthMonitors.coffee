@@ -1,45 +1,31 @@
-###
-Copyright 2016 Hewlett-Packard Development Company, L.P.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-Software distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License. 
-###
-
-
 functions = require('./functions')
 module.exports = (robot) ->
   #   get all monitors status for target or tag
-  robot.respond /health of (.*) on (.*)/i, (msg) ->
-    getHealthMonitorsForTarget robot,msg
+  robot.respond /SiteScope health of target (.*)/i, (msg) ->
+    getHealthMonitorsForTarget robot,msg,'target'
+  robot.respond /SiteScope health of tag (.*)/i, (msg) ->
+    getHealthMonitorsForTarget robot,msg,'tag'
 
 ########################################################################################
 #  get Health Monitors For Target
 ########################################################################################
 
-getHealthMonitorsForTarget = (robot,msg) ->
+getHealthMonitorsForTarget = (robot,msg,value) ->
   reporter = msg.message.user.name
   target = msg.match[1].trim()
   target = target.replace("<", "");
   target = target.replace(">", "");
-  sis = msg.match[2].trim()
-  tempObj = functions.getSisConfigurationObject sis
+  tempObj = functions.getSisConfigurationObject msg.match[2]
   if tempObj
     sisUrl = tempObj['url']
     sisAuthorization = tempObj['Authorization']
-    if target is 'target'
+    if value is 'target'
       targetQuery = "&target_display_name=#{target}"
     else
-      targetQuery = "&tag=#{target}"
+      targetQuery = "&#{target}=#{target}"
     queryParam = "entity_type=monitor&identifier=#{reporter}&get_full_data=true#{targetQuery}"
     url = "#{sisUrl}/monitors?#{queryParam}"
+    #robot.logger.debug "url: #{url}"
     msg.http(url)
     .headers( Authorization: sisAuthorization, Accept: 'application/json')
     .get() (error, res, body) ->
@@ -57,6 +43,7 @@ getHealthMonitorsForTarget = (robot,msg) ->
 
       try
         obj = JSON.parse(body )
+        #robot.logger.debug "obj: #{JSON.stringify(obj)}" 
         found = false
         for myKey of obj
           tempObj = obj[myKey]

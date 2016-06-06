@@ -1,26 +1,10 @@
-###
-Copyright 2016 Hewlett-Packard Development Company, L.P.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-Software distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License. 
-###
-
-
 functions = require('./functions')
 module.exports = (robot) ->
   #   Get monitors list (recursive) in group
-  robot.respond /get monitors in group (.*) on (.*)/i, (msg) ->
+  robot.respond /SiteScope get monitors in group (.*)/i, (msg) ->
     getMonitorsInGroup robot,msg,false
   
-  robot.respond /get monitors recursive in group (.*) on (.*)/i, (msg) ->
+  robot.respond /SiteScope get monitors recursive in group (.*)/i, (msg) ->
     getMonitorsInGroup robot,msg,true
 
 ########################################################################################
@@ -29,11 +13,10 @@ module.exports = (robot) ->
 
 getMonitorsInGroup = (robot,msg,recursive) ->
   reporter = msg.message.user.name
-  sis = msg.match[2].trim()
   groupPath = msg.match[1].trim()
   full_pathArr = groupPath.split("/")
   full_path = full_pathArr.join("_sis_path_delimiter_")
-  tempObj = functions.getSisConfigurationObject sis
+  tempObj = functions.getSisConfigurationObject msg.match[2]
   if tempObj
     sisUrl = tempObj['url']
     sisAuthorization = tempObj['Authorization']
