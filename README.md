@@ -35,7 +35,6 @@ User put configuration in a config file, see  https://github.hpe.com/ChatOps/hub
                 "Examples":""
          },
 		 
-		 ..............
 		 
         "Run monitor/group": {
                 "Description": "Run monitor, for monitors in group set group's path",
