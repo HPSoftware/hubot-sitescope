@@ -88,7 +88,7 @@ Get monitors list
 	Examples:	SiteScope get monitors in group HPE/M1
 				SiteScope get monitors recursive in group HPE/M1
 ```  
-health
+Health
 ```
 	Description:get all monitors status for target or tag.
 	Syntax: 	health of [Target | Tag] on [SiteScope name]
