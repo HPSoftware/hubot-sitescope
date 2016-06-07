@@ -27,7 +27,7 @@ User put configuration in a config file, see  https://github.hpe.com/ChatOps/hub
                 "url": "http://[your host]:8080/SiteScope/api",
                 "Authorization": "Basic [your base64 encoded auth]"
          },
-        " SiteScope_Instanse_X": {
+        "SiteScope_Instanse_X": {
                 "url": " http://[your host]:8080/SiteScope/api",
                 "Authorization": "Basic [your base64 encoded auth]"
          }
