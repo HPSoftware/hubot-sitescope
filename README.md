@@ -23,9 +23,13 @@ User put configuration in a config file, see  https://github.hpe.com/ChatOps/hub
       "default_sis"  :"SisOnAmazon"
     },
     "instances":{
-        "SisOnAmazon": {
-                "url": "http://<your IpAddress>:8080/SiteScope/api",
-                "Authorization": "Basic YWRtaW46YWRtaW4="
+        "SiteScope_Instanse_1": {
+                "url": "http://[your host]:8080/SiteScope/api",
+                "Authorization": "Basic [your base64 encoded auth]"
+         },
+        " SiteScope_Instanse_X": {
+                "url": " http://[your host]:8080/SiteScope/api",
+                "Authorization": "Basic [your base64 encoded auth]"
          }
     },
     "help_commands":{
