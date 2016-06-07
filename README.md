@@ -57,13 +57,13 @@ Note: If bot is running, after changing values reload configuration requred
 
 ## Commands support
 
-Show/reload configuration
+**Show/reload configuration**
 ```
 	Description: Show or reload SiteScope instances configuration file.
 	Syntax: SiteScope show config file
 			SiteScope reload config file
 ```  
-Add acknowledgement
+**Add acknowledgement**
 ```
 	Description:Add acknowledgement to entity.
 	Syntax: 	SiteScope add ack for [Entity full path] disable [Comment]
@@ -71,7 +71,7 @@ Add acknowledgement
 	Examples:	SiteScope add ack for memMonitors/mem disable I'm on it
 				SiteScope add ack for memMonitors/mem enable it's OK now
 ```  
-Enable/disable Entity
+**Enable/disable Entity**
 ```
 	Description:Enable or disable entity , monitor or group.
 	Syntax: 	SiteScope [enable | disable] [entity type] [Entity full path]
@@ -80,7 +80,7 @@ Enable/disable Entity
 				SiteScope enable monitor memMonitors/mem
 				SiteScope disable monitor memMonitors/mem
 ```  
-Get monitors list
+**Get monitors list**
 ```
 	Description:Get monitors list (recursive) in group.
 	Syntax: 	SiteScope get monitors in group [Group full path]
@@ -88,14 +88,14 @@ Get monitors list
 	Examples:	SiteScope get monitors in group HPE/M1
 				SiteScope get monitors recursive in group HPE/M1
 ```  
-Health
+**Check health**
 ```
 	Description:get all monitors status for target or tag.
 	Syntax: 	health of [Target | Tag] on [SiteScope name]
 	Examples:	health of SiteScope Server on SisOnAmazon
 				health of DockerTag on SisOnAmazon
 ```  
-Search monitor/group
+**Search monitor/group**
 ```
 	Description:Search monitors, group , tag or all.
 	Syntax: 	SiteScope search [entity type] for [Entity name]
@@ -104,7 +104,7 @@ Search monitor/group
 				SiteScope search tag for DockerMonitors
 				SiteScope search all for Docker
 ```  
-Run monitor/group
+**Run monitor/group**
 ```
 	Description:Run monitor, for monitors in group set group's path.
 	Syntax: 	SiteScope run monitors [Entity full path]
