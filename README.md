@@ -8,7 +8,7 @@ In hubot project repo, run:
 
 `npm install hubot-sitescope --save`
 
-Then add **hubot-sitescope** to your `external-scripts.json`:
+Then add `hubot-sitescope` to your `external-scripts.json`:
 
 ```json
 [
@@ -16,7 +16,8 @@ Then add **hubot-sitescope** to your `external-scripts.json`:
 ]
 ```
 ## Config
-User put configuration in a config file, see  https://github.hpe.com/ChatOps/hubot-integrations/blob/master/hubot-sitescope/src/sitescope-setting.config
+Bot configuration stored in config file at: src/sitescope-setting.config
+
 ```json
 {
     "variables":{
@@ -48,8 +49,11 @@ User put configuration in a config file, see  https://github.hpe.com/ChatOps/hub
     }
 }
 ```
-Use the default_sis parameter for configure the default SiteScope instance.
-After changing values Please reload configuration again  
+* To configure the default SiteScope instance edit `default_sis` parameter. 
+* Basic authentication used in order to authorise to SiteScope API.
+  * For more details about basic atuh please check: [Wiki](https://en.wikipedia.org/wiki/Basic_access_authentication)
+
+Note: If bot is running, after changing values reload configuration requred
 
 ## Commands support
 
