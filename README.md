@@ -20,7 +20,7 @@ Bot configuration stored in config file at: src/sitescope-setting.config
 ```json
 {
     "variables":{
-      "default_sis"  :"SisOnAmazon"
+      "default_sis"  :"SiteScope_Instanse_1"
     },
     "instances":{
         "SiteScope_Instanse_1": {
