@@ -6,8 +6,8 @@ A hubot script for SiteScope ChatOps integration
 
 1.	Generate new Hubot deployment by running `yo hubot` command or use an existing deployment you already have.
 2. From the Hubot main direcrtory, run the following command:
-`npm install git+ https://github.com/HPSoftware/hubot-sitescope.git --save `
-  *This command will install hubot-sitescope package on your Hubot.
+`npm install git+https://github.com/HPSoftware/hubot-sitescope.git --save `
+  * This command will install hubot-sitescope package on your Hubot.
 3. Then add `hubot-sitescope` to your `external-scripts.json` file contains list of packages from npm:
 ```json
 [
