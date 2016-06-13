@@ -4,12 +4,11 @@ A hubot script for SiteScope ChatOps integration
 
 ## Installation
 
-In hubot project repo, run:
-
-`npm install hubot-sitescope --save`
-
-Then add `hubot-sitescope` to your `external-scripts.json`:
-
+1.	Generate new Hubot deployment by running `yo hubot` command or use an existing deployment you already have.
+2. From the Hubot main direcrtory, run the following command:
+`npm install git+ https://github.com/HPSoftware/hubot-sitescope.git --save `
+  *This command will install hubot-sitescope package on your Hubot.
+3. Then add `hubot-sitescope` to your `external-scripts.json` file contains list of packages from npm:
 ```json
 [
   "hubot-sitescope"
@@ -49,11 +48,14 @@ Bot configuration stored in config file at: src/sitescope-setting.config
     }
 }
 ```
-* To configure the default SiteScope instance edit `default_sis` parameter. 
-* Basic authentication used in order to authorise to SiteScope API.
+* To configure the default SiteScope instance edit `default_sis` parameter.
+  * This parameter used to select default SiteScope instance that will be used if no specific instance name specified then running bot commands from the chat
+* `instances` parameter represent the array of SiteScope instance settings
+  * For each set of settings the url parameter is the URL of the SiteScope REST api in following format: `http(s)://[your SiteScope host]:[port]/SiteScope/api`
+* `Authorization`` is the authorization required to authenticate against your SiteScope instance in basic authentication format.
   * For more details about basic atuh please check: [Wiki](https://en.wikipedia.org/wiki/Basic_access_authentication)
 
-Note: If bot is running, after changing values reload configuration requred
+**Note**: If your bot is running and you make any changes to the configuration values, then you must reload the configuration file for the changes to take effect.
 
 ## Commands support
 
