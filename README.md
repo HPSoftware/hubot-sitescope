@@ -1,6 +1,6 @@
 # hubot-sitescope
 
-A hubot script for SiteScope ChatOps integration
+A hubot package for SiteScope ChatOps integration
 
 ## Installation
 
