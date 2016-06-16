@@ -1,19 +1,19 @@
 {
   "name": "hubot-sitescope",
-  "description": "get monitors data from sitescope",
-  "version": "0.0.0",
+  "description": "Package allows to trigger SiteScope APIs",
+  "version": "0.0.1",
   "author": "Shlomi, Pini <shlomi@hp.com>",
-  "license": "MIT",
+  "license": "Apache License, Version 2.0",
 
-  "keywords": "sitescope hubot slack",
+  "keywords": ["chatops","sitescope","hubot","hubot-scripts","bot"],
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-sitescope.git"
+    "url": "git://github.com/HPSoftware/hubot-sitescope.git"
   },
 
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-sitescope/issues"
+    "url": "https://github.com/HPSoftware/hubot-sitescope/issues"
   },
 
   "dependencies": {
